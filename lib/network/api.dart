@@ -33,6 +33,9 @@ class Api {
           results.add(person);
         }
       }
+
+      // IMPORTANT: Return the results!
+      return results;
     } else {
       // If we don't have cached data, we need to fetch it first and then search.
       return null;
@@ -48,15 +51,19 @@ class Api {
     }
 
     // If we don't have cached data, we need to fetch it first and then search.
-    // Fetch person
+    // Note: Use 10.0.2.2 for Android emulator to access host machine's localhost
+    // Use 127.0.0.1 for iOS simulator or web
+    const baseUrl = 'http://10.0.2.2:5500/api';
+
+    // Fetch persons
     final persons = await _getJson(
-      'http://127.0.0.1:5500/api/persons.json',
+      '$baseUrl/persons.json',
     ).then((json) => json.map((value) => PersonModel.fromJson(value)).toList());
     _persons = persons;
 
-    // Fetch person
+    // Fetch animals
     final animals = await _getJson(
-      'http://127.0.0.1:5500/api/animals.json',
+      '$baseUrl/animals.json',
     ).then((json) => json.map((value) => AnimalModel.fromJson(value)).toList());
     _animals = animals;
 
