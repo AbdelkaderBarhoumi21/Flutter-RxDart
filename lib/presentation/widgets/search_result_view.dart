@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_rxdart/bloc/search_state.dart';
-import 'package:flutter_rxdart/models/animal_model.dart';
-import 'package:flutter_rxdart/models/person_model.dart';
+import 'package:flutter_rxdart/presentation/bloc/search_state.dart';
+import 'package:flutter_rxdart/data/models/animal_model.dart';
+import 'package:flutter_rxdart/data/models/person_model.dart';
 
 class SearchResultView extends StatelessWidget {
   final Stream<SearchResult?> searchResult;

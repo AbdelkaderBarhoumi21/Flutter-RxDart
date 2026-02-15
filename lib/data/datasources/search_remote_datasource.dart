@@ -1,18 +1,21 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter_rxdart/models/animal_model.dart';
-import 'package:flutter_rxdart/models/person_model.dart';
-import 'package:flutter_rxdart/models/thing_model.dart';
+import 'package:flutter_rxdart/data/models/animal_model.dart';
+import 'package:flutter_rxdart/data/models/person_model.dart';
+import 'package:flutter_rxdart/domain/entities/thing.dart';
 
 typedef SearchTerm = String;
 
-class Api {
-  Api();
+/// Remote data source for search functionality
+/// Handles all network requests and data fetching
+class SearchRemoteDataSource {
+  SearchRemoteDataSource();
+
   List<AnimalModel>? _animals;
   List<PersonModel>? _persons;
 
-  // Fetches animals and persons from the API and caches them in memory.
+  /// Searches through cached data using the search term
   List<ThingModel>? _extractThingUsingSearchTerm(SearchTerm term) {
     final cachedAnimal = _animals;
     final cachedPerson = _persons;
@@ -42,9 +45,10 @@ class Api {
     }
   }
 
+  /// Searches for things (animals and persons) by term
+  /// First checks cache, then fetches from API if needed
   Future<List<ThingModel>> search(SearchTerm term) async {
-    final trimmedTerm = term.trim().toLowerCase();
-    // search in the cach first
+    // search in the cache first
     final cachedResult = _extractThingUsingSearchTerm(term);
     if (cachedResult != null) {
       return cachedResult;
@@ -88,6 +92,7 @@ class Api {
       );
 }
 
+/// Extension for case-insensitive and trimmed string comparison
 extension TrimmedCaseInsensitiveContain on String {
   bool trimmedContains(String other) =>
       trim().toLowerCase().contains(other.trim().toLowerCase());

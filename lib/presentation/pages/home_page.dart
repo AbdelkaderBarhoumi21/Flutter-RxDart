@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_rxdart/bloc/search_bloc.dart';
-import 'package:flutter_rxdart/network/api.dart';
-import 'package:flutter_rxdart/views/search_result_view.dart';
+import 'package:flutter_rxdart/presentation/bloc/search_bloc.dart';
+import 'package:flutter_rxdart/data/datasources/search_remote_datasource.dart';
+import 'package:flutter_rxdart/presentation/widgets/search_result_view.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -14,7 +14,7 @@ class _HomePageState extends State<HomePage> {
   late final SearchBloc _searchBloc;
   @override
   void initState() {
-    _searchBloc = SearchBloc(api: Api());
+    _searchBloc = SearchBloc(dataSource: SearchRemoteDataSource());
     super.initState();
   }
 

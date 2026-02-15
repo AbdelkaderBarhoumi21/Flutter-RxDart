@@ -1,26 +1,26 @@
 import 'package:flutter/foundation.dart' show immutable;
-import 'package:flutter_rxdart/bloc/search_state.dart';
-import 'package:flutter_rxdart/network/api.dart';
+import 'package:flutter_rxdart/presentation/bloc/search_state.dart';
+import 'package:flutter_rxdart/data/datasources/search_remote_datasource.dart';
 import 'package:rxdart/rxdart.dart';
 
 /// A BLoC (Business Logic Component) that handles search functionality using RxDart.
 ///
 /// This BLoC follows a unidirectional data flow pattern:
 /// - Input: Users write search terms to [search] (write-only Sink)
-/// - Output: Users listen to [result] (read-only Stream) for search results
+/// - Output: Users listen to [results] (read-only Stream) for search results
 ///
 /// **Data Flow:**
 /// ```
 /// User writes → search (Sink) → BehaviorSubject → distinct() → debounceTime()
-///     → switchMap() → result (Stream) → User reads
+///     → switchMap() → results (Stream) → User reads
 /// ```
 ///
 /// **Example Usage:**
 /// ```dart
-/// final bloc = SearchBloc(api: MyApi());
+/// final bloc = SearchBloc(dataSource: SearchRemoteDataSource());
 ///
 /// // Listen to results
-/// bloc.result.listen((result) {
+/// bloc.results.listen((result) {
 ///   if (result is SearchResultLoading) {
 ///     // Show loading indicator
 ///   } else if (result is SearchResultSuccess) {
@@ -59,7 +59,17 @@ class SearchBloc {
   void dispose() {
     search.close();
   }
-  
+
+  /// Factory constructor that sets up the reactive stream pipeline.
+  ///
+  /// **Why use a factory constructor?**
+  /// 1. **Separation of Concerns**: Handles complex RxDart stream setup logic
+  ///    while keeping the actual class constructor simple and clean.
+  /// 2. **Stream Pipeline Setup**: Creates and configures the entire reactive
+  ///    pipeline with operators like distinct(), debounceTime(), switchMap().
+  /// 3. **Encapsulation**: Private constructor prevents direct instantiation,
+  ///    ensuring streams are always properly configured.
+  ///
   /// **The Pipeline:**
   /// - `distinct()`: Filters out duplicate consecutive search terms
   /// - `debounceTime(300ms)`: Waits 300ms after user stops typing
@@ -70,7 +80,7 @@ class SearchBloc {
   ///
   /// **Why return like this?**
   /// ```dart
-  /// return SearchBloc._(search: textChanges.sink, result: results);
+  /// return SearchBloc._(search: textChanges.sink, results: results);
   /// ```
   /// This separates read and write concerns:
   /// - `textChanges.sink` → Write-only interface for input
@@ -78,7 +88,7 @@ class SearchBloc {
   /// - Internal `textChanges` BehaviorSubject connects them but stays hidden
   ///
   /// This creates unidirectional data flow where input and output are clearly separated.
-  factory SearchBloc({required Api api}) {
+  factory SearchBloc({required SearchRemoteDataSource dataSource}) {
     final textChanges = BehaviorSubject<String>();
 
     final Stream<SearchResult?> results = textChanges
@@ -88,7 +98,7 @@ class SearchBloc {
           if (searchTerm.isEmpty) {
             return Stream<SearchResult?>.value(null);
           } else {
-            return Rx.fromCallable(() => api.search(searchTerm))
+            return Rx.fromCallable(() => dataSource.search(searchTerm))
                 .delay(const Duration(seconds: 1))
                 .map(
                   (streamResult) => streamResult.isEmpty
