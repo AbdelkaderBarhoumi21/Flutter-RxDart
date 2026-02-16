@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:rxdart/subjects.dart';
+
+import 'dart:developer' as devtools show log;
+
+extension Log on Object {
+  void log() => devtools.log(toString());
+}
 
 void main() {
   runApp(const MyApp());
@@ -23,41 +28,40 @@ class MyApp extends StatelessWidget {
   }
 }
 
+/*
+this mean every time you apply operator in your stream you create a new instance => create new stream 
+final result =foo             //stream 1
+              .take(3)        //stream 2
+              .debounce()     //stream 3
+              .merge()        //stream 4
+              .concat()       //stream 5
+*/
+// concat is good for API Call
+
+void testIt() async {
+  final stream1 = Stream.periodic(
+    const Duration(seconds: 1),
+    (count) => 'Stream 1, count= $count',
+  ).take(3);
+  final stream2 = Stream.periodic(
+    const Duration(seconds: 1),
+    (count) => 'Stream 1, count= $count',
+  );
+
+  final result = stream1.concatWith([stream2]);
+  await for (final value in result) {
+    value.log();
+  }
+}
+
 class HomePage extends HookWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Every rebuild of this widget will create a new BehaviorSubject, but it will only be created once due to useMemoized => key ref to super.key.
-    final subject = useMemoized(() => BehaviorSubject<String>(), [key]);
-    // useEffect will run the provided function when the widget is disposed, ensuring that the subject is properly closed to prevent memory leaks.
-    useEffect(() => subject.close, [subject]);
+    testIt();
     return Scaffold(
-      appBar: AppBar(
-        title: StreamBuilder(
-          stream: subject.stream.distinct().debounceTime(
-            const Duration(seconds: 1),
-          ),
-          initialData: 'Please start typing....',
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
-            }
-            if (snapshot.hasData) {
-              return Text(snapshot.requireData);
-            }
-            return const Text('Type something');
-          },
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: TextField(
-          onChanged: (value) {
-            subject.sink.add(value);
-          },
-        ),
-      ),
+      appBar: AppBar(title: AppBar(title: Text('Home Page'))),
     );
   }
 }
