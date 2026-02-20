@@ -17,6 +17,9 @@ dependencies:
   # Flutter Hooks for better state management in Flutter
   flutter_hooks: ^0.21.3+1
 
+  # UUID 
+  uuid: ^4.5.2
+
   # Firebase 
   firebase_core: ^4.4.0
   firebase_auth: ^6.1.4
