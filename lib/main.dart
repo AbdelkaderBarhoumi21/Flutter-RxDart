@@ -1,5 +1,6 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
 
 void main() {
@@ -22,40 +23,48 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class HomePage extends HookWidget {
+Stream<String> getNames({required String filePath}) {
+  final names = rootBundle.loadString(filePath);
+  final result = Stream.fromFuture(names).transform((const LineSplitter()));
+  return result;
+}
+
+Stream<String> getAllNames() => getNames(
+  filePath: 'assets/texts/cats.txt',
+).concatWith([getNames(filePath: 'assets/texts/dogs.txt')]);
+
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
   Widget build(BuildContext context) {
-    // Every rebuild of this widget will create a new BehaviorSubject, but it will only be created once due to useMemoized => key ref to super.key.
-    final subject = useMemoized(() => BehaviorSubject<String>(), [key]);
-    // useEffect will run the provided function when the widget is disposed, ensuring that the subject is properly closed to prevent memory leaks.
-    useEffect(() => subject.close, [subject]);
+    //toList there collect all elements of this stream in a [List]
     return Scaffold(
-      appBar: AppBar(
-        title: StreamBuilder(
-          stream: subject.stream.distinct().debounceTime(
-            const Duration(seconds: 1),
-          ),
-          initialData: 'Please start typing....',
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
-            }
-            if (snapshot.hasData) {
-              return Text(snapshot.requireData);
-            }
-            return const Text('Type something');
-          },
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: TextField(
-          onChanged: (value) {
-            subject.sink.add(value);
-          },
-        ),
+      appBar: AppBar(title: const Text('RxDart concat')),
+      body: FutureBuilder(
+        future: getAllNames().toList(),
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.none:
+            case ConnectionState.waiting:
+            case ConnectionState.active:
+              return const Center(child: CircularProgressIndicator());
+            case ConnectionState.done:
+              final names = snapshot.requireData;
+              return ListView.separated(
+                separatorBuilder: (context, index) => SizedBox(width: 16),
+                itemCount: names.length,
+                itemBuilder: (context, index) {
+                  return ListTile(title: Text(names[index]));
+                },
+              );
+          }
+        },
       ),
     );
   }
