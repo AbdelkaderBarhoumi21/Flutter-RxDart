@@ -17,6 +17,11 @@ dependencies:
   # Flutter Hooks for better state management in Flutter
   flutter_hooks: ^0.21.3+1
 
+  # Firebase 
+  firebase_core: ^4.4.0
+  firebase_auth: ^6.1.4
+  cloud_firestore: ^6.1.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
