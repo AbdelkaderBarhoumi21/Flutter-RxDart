@@ -6,7 +6,6 @@ import 'package:flutter_rxdart/blocs/auth_blocs/auth_error.dart';
 import 'package:flutter_rxdart/blocs/auth_blocs/auth_state.dart';
 import 'package:flutter_rxdart/extension/stream_extension.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:rxdart/subjects.dart';
 
 @immutable
 class AuthBloc {

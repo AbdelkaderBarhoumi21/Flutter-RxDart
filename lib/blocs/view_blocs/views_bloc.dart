@@ -7,6 +7,8 @@ class ViewsBloc {
   final Sink<CurrentView> goToView;
   final Stream<CurrentView> currentView;
 
+
+
   factory ViewsBloc() {
     // BehaviorSubject impl Sink that's why it can write without .sink =>controller.add(10);
     // Like => StreamController which can't write without using .sink => controller.sink.add(10);
