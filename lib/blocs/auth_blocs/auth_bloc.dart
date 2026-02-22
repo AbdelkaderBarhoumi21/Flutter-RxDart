@@ -135,4 +135,10 @@ class AuthBloc {
       logout: logout.sink,
     );
   }
+
+  void dispose() {
+    login.close();
+    register.close();
+    logout.close();
+  }
 }
