@@ -53,7 +53,7 @@ class AuthErrorNoCurrentUser extends AuthError {
       );
 }
 
-// operation not alloweed
+// operation not allowed
 @immutable
 class AuthErrorOperationNotAllowed extends AuthError {
   const AuthErrorOperationNotAllowed()
