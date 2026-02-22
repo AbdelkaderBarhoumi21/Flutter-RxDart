@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_rxdart/helpers/debug.dart';
-
 void main() {
   runApp(const MyApp());
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_rxdart/blocs/auth_error.dart';
+import 'package:flutter_rxdart/blocs/auth_blocs/auth_error.dart';
 import 'package:flutter_rxdart/dialogs/app_dialog.dart';
 
 Future<void> showAuthError({
