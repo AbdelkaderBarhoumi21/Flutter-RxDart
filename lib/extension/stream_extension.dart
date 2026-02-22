@@ -59,3 +59,14 @@ extension Loading<E> on Stream<E> {
         onSink.add(isLoading);
       });
 }
+
+/// final Stream<int?> myStream; // 10,20,100,null,35,null
+/// final Stream<int>myStream;// 10,20,100,35
+/// this extension transform a stream which can be null Stream<T?>  to stream which can't be null Stream<T>
+extension Unwrap<T> on Stream<T?> {
+  Stream<T> unwrap() => switchMap((optional) async* {
+    if (optional != null) {
+      yield optional;
+    }
+  });
+}
