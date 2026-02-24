@@ -5,7 +5,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_rxdart/extension/stream_extension.dart';
 import 'package:flutter_rxdart/models/contact_model.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:rxdart/subjects.dart';
 
 typedef _Snapshots = QuerySnapshot<Map<String, dynamic>>;
 typedef _Document = DocumentReference<Map<String, dynamic>>;
