@@ -119,6 +119,11 @@ class AppBloc {
     _authBloc.login.add(LoginCommand(email: email, password: password));
   }
 
+  // delete account
+  void deleteAccount() {
+    // TODO : we haven't impl it yet
+  }
+
   // go to contacts view
   void goToContactListView() =>
       _viewsBloc.goToView.add(CurrentView.contactList);

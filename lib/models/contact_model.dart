@@ -24,6 +24,8 @@ class ContactModel {
       lastName = json[ContactModelKeys.lastNameKey],
       phoneNumber = json[ContactModelKeys.phoneNumberKey];
 
+  String get fullName => '$firstName $lastName';
+
   @override
   String toString() =>
       'ContactModel(id: $id, firstName: $firstName, lastName: $lastName, phoneNumber: $phoneNumber)';

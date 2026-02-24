@@ -5,6 +5,7 @@ typedef LogoutCallback = VoidCallback;
 typedef GoBackCallback = VoidCallback;
 typedef LoginFunction = void Function(String email, String password);
 typedef RegisterFunction = void Function(String email, String password);
+typedef DeleteAccountCallback = VoidCallback;
 typedef CreateContactCallback =
     void Function(String firstName, String lastName, String phoneNumber);
 typedef DeleteContactCallback = void Function(ContactModel contact);
