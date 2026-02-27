@@ -121,7 +121,8 @@ class AppBloc {
 
   // delete account
   void deleteAccount() {
-    // TODO : we haven't impl it yet
+    _contactsBloc.deleteAllContacts.add(null);
+    _authBloc.deleteAccount.add(null);
   }
 
   // go to contacts view

@@ -14,11 +14,14 @@ class ContactsBloc {
   // Sink like a signal that come form the UI
   final Sink<String?> userId;
   final Sink<ContactModel> createContact;
+
   final Sink<ContactModel> deleteContact;
   final Stream<Iterable<ContactModel>> contacts;
+  final Sink<void> deleteAllContacts;
 
   final StreamSubscription<void> _onCreateContact;
   final StreamSubscription<void> _onDeleteContact;
+  final StreamSubscription<void> _onDeleteAllContactsSubscription;
 
   factory ContactsBloc() {
     final _firebase = FirebaseFirestore.instance;
@@ -71,12 +74,28 @@ class ContactsBloc {
             )
             .listen((_) {});
 
+    // delete all contacts
+    final deleteAllContacts = BehaviorSubject<void>();
+
+    final StreamSubscription<void> deleteAllContactsSubscription =
+        deleteAllContacts
+            .switchMap((_) => userId.take(1).unwrap())
+            .asyncMap((userId) => _firebase.collection(userId).get())
+            .switchMap(
+              (collection) => Stream.fromFutures(
+                collection.docs.map((doc) => doc.reference.delete()),
+              ),
+            )
+            .listen((_) {});
+
     // create ContactsBloc
     return ContactsBloc._(
       userId: userId,
       createContact: createContactsSubject.sink,
       deleteContact: deleteContactsSubject.sink,
       contacts: contacts,
+      deleteAllContacts: deleteAllContacts.sink,
+      onDeleteAllContacts: deleteAllContactsSubscription,
       onCreateContact: createContactSubscription,
       onDeleteContact: deleteContactsSubscription,
     );
@@ -86,8 +105,10 @@ class ContactsBloc {
     userId.close();
     createContact.close();
     deleteContact.close();
+    deleteAllContacts.close();
     _onCreateContact.cancel();
     _onDeleteContact.cancel();
+    _onDeleteAllContactsSubscription.cancel();
   }
 
   const ContactsBloc._({
@@ -95,8 +116,11 @@ class ContactsBloc {
     required this.createContact,
     required this.deleteContact,
     required this.contacts,
+    required this.deleteAllContacts,
     required StreamSubscription<void> onCreateContact,
     required StreamSubscription<void> onDeleteContact,
+    required StreamSubscription<void> onDeleteAllContacts,
   }) : _onCreateContact = onCreateContact,
-       _onDeleteContact = onDeleteContact;
+       _onDeleteContact = onDeleteContact,
+       _onDeleteAllContactsSubscription = onDeleteAllContacts;
 }

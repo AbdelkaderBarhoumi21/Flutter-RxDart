@@ -17,6 +17,7 @@ class AuthBloc {
   final Sink<LoginCommand> login;
   final Sink<RegisterCommand> register;
   final Sink<void> logout;
+  final Sink<void> deleteAccount;
 
   const AuthBloc._({
     required this.authStatus,
@@ -26,6 +27,7 @@ class AuthBloc {
     required this.login,
     required this.register,
     required this.logout,
+    required this.deleteAccount,
   });
 
   factory AuthBloc() {
@@ -114,6 +116,8 @@ class AuthBloc {
           }
         })
         .setLoadingTo(false, onSink: isLoading.sink);
+
+
     // Auth error => login+ register +logout errors
 
     final Stream<AuthError?> authError = Rx.merge([
@@ -130,6 +134,7 @@ class AuthBloc {
       login: login.sink,
       register: register.sink,
       logout: logout.sink,
+      deleteAccount: deleteAccount,
     );
   }
 
@@ -137,5 +142,6 @@ class AuthBloc {
     login.close();
     register.close();
     logout.close();
+    deleteAccount.close();
   }
 }
