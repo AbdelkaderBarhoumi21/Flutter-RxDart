@@ -4,20 +4,18 @@ import 'package:flutter_rxdart/utils/type_def.dart';
 
 class RegisterPage extends HookWidget {
   const RegisterPage({
-    required this.goToRegisterView,
+    required this.goToLoginView,
     required this.register,
     super.key,
   });
 
-  final VoidCallback goToRegisterView;
+  final VoidCallback goToLoginView;
   final RegisterFunction register;
 
   @override
   Widget build(BuildContext context) {
     final emailController = useTextEditingController(text: 'user@gmail.com');
     final passwordController = useTextEditingController(text: '***********');
-    final email = emailController.text;
-    final password = passwordController.text;
 
     return Scaffold(
       appBar: AppBar(title: Text('Register Page')),
@@ -44,12 +42,14 @@ class RegisterPage extends HookWidget {
 
               TextButton(
                 onPressed: () {
-                  register(email, password);
+                  final email = emailController.text;
+                  final password = passwordController.text;
+                  register(email: email, password: password);
                 },
                 child: const Text('Register'),
               ),
               TextButton(
-                onPressed: goToRegisterView,
+                onPressed: goToLoginView,
                 child: const Text('Already have account? Login here!'),
               ),
             ],

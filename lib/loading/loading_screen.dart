@@ -9,6 +9,36 @@ class LoadingScreen {
 
   LoadingScreenController? controller;
 
+  /// Shows a loading overlay with the given text.
+  ///
+  /// If an overlay is already showing (controller != null), it updates the text.
+  /// Otherwise, creates a new overlay.
+  void show({required BuildContext context, required String text}) {
+    if (controller?.update(text) ?? false) {
+      // Overlay exists, just update the text
+      return;
+    } else {
+      // No overlay exists, create a new one
+      controller = _showOverlay(context: context, text: text);
+    }
+  }
+
+  /// Hides the loading overlay and cleans up resources.
+  ///
+  /// **Why set controller = null?**
+  /// 1. **Memory Management**: Releases the reference to the controller, allowing
+  ///    the garbage collector to free up memory once close() is called.
+  /// 2. **State Management**: Indicates that no overlay is currently active,
+  ///    which is checked in show() to decide whether to update or create new overlay.
+  /// 3. **Prevent Errors**: Avoids calling methods on an already closed controller.
+  ///    Multiple calls to hide() won't crash because null?.close() is safe.
+  /// 4. **Clean State**: Ensures the next show() call creates a fresh overlay
+  ///    instead of trying to update a closed one.
+  void hide() {
+    controller?.close(); // Close the overlay and its stream
+    controller = null; // Release reference for garbage collection & state reset
+  }
+
   LoadingScreenController _showOverlay({
     required BuildContext context,
     required String text,

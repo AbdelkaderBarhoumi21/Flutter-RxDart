@@ -24,12 +24,10 @@ class AddContactPage extends HookWidget {
     final phoneNumberController = useTextEditingController(
       text: '+21698962120'.isDebugging,
     );
-    final firstName = firstNameController.text;
-    final lastName = lastNameController.text;
-    final phoneNumber = phoneNumberController.text;
 
     return Scaffold(
       appBar: AppBar(
+        title: const Text('Create a new contact'),
         leading: IconButton(onPressed: goBack, icon: Icon(Icons.close)),
       ),
       body: Padding(
@@ -61,7 +59,16 @@ class AddContactPage extends HookWidget {
 
               TextButton(
                 onPressed: () {
-                  createContact(firstName, lastName, phoneNumber);
+                  final firstName = firstNameController.text;
+                  final lastName = lastNameController.text;
+                  final phoneNumber = phoneNumberController.text;
+
+                  createContact(
+                    firstName: firstName,
+                    lastName: lastName,
+                    phoneNumber: phoneNumber,
+                  );
+                  goBack();
                 },
                 child: Text('Create contact'),
               ),

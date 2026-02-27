@@ -1,5 +1,3 @@
-import 'dart:nativewrappers/_internal/vm/lib/ffi_native_type_patch.dart';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart' show immutable;
 import 'package:flutter_rxdart/blocs/auth_blocs/auth_error.dart';
@@ -87,7 +85,7 @@ class AuthBloc {
         .setLoadingTo(false, onSink: isLoading.sink);
 
     // logout in + error handling
-    final logout = BehaviorSubject<Void>();
+    final logout = BehaviorSubject<void>();
     final Stream<AuthError?> logoutError = logout
         .setLoadingTo(true, onSink: isLoading.sink)
         .asyncMap((_) async {
@@ -102,7 +100,7 @@ class AuthBloc {
         })
         .setLoadingTo(false, onSink: isLoading.sink);
     // delete user  + error handling
-    final deleteAccount = BehaviorSubject<Void>();
+    final deleteAccount = BehaviorSubject<void>();
     final Stream<AuthError?> deleteAccountError = deleteAccount
         .setLoadingTo(true, onSink: isLoading.sink)
         .asyncMap((_) async {

@@ -18,7 +18,7 @@ class ContactsPage extends StatelessWidget {
   final LogoutCallback logoutCallback;
   final DeleteAccountCallback deleteAccountCallback;
   final DeleteContactCallback deleteContactCallback;
-  final VoidCallbackAction createNewContact;
+  final void Function() createNewContact;
   final Stream<Iterable<ContactModel>> contacts;
 
   @override
@@ -34,7 +34,10 @@ class ContactsPage extends StatelessWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        backgroundColor: Colors.blue,
+        foregroundColor: Colors.white,
+
+        onPressed: createNewContact,
         child: Icon(Icons.add),
       ),
       body: StreamBuilder<Iterable<ContactModel>>(

@@ -16,8 +16,6 @@ class LoginPage extends HookWidget {
   Widget build(BuildContext context) {
     final emailController = useTextEditingController(text: 'user@gmail.com');
     final passwordController = useTextEditingController(text: '***********');
-    final email = emailController.text;
-    final password = passwordController.text;
 
     return Scaffold(
       appBar: AppBar(title: Text('Login Page')),
@@ -44,7 +42,9 @@ class LoginPage extends HookWidget {
 
               TextButton(
                 onPressed: () {
-                  login(email, password);
+                  final email = emailController.text;
+                  final password = passwordController.text;
+                  login(email: email, password: password);
                 },
                 child: const Text('Login'),
               ),
