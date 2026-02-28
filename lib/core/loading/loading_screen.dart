@@ -43,6 +43,8 @@ class LoadingScreen {
     required BuildContext context,
     required String text,
   }) {
+    //Allows updating the loading text without rebuilding the entire overlay
+    //Call controller.update("New text") → adds to stream → only Text widget rebuilds
     final _text = StreamController<String>();
     _text.add(text);
 
