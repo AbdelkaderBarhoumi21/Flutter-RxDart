@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 
-extension debuging on String {
+extension Debugging on String {
   String? get isDebugging => kDebugMode ? this : null;
 }
 
