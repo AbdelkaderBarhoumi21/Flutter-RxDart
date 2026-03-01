@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_rxdart/features/app/presentation/bloc/app_bloc.dart';
-import 'package:flutter_rxdart/features/auth/domain/auth_error.dart';
+import 'package:flutter_rxdart/features/auth/domain/entities/auth_error.dart';
 import 'package:flutter_rxdart/features/views/presentation/bloc/current_view.dart';
 import 'package:flutter_rxdart/features/auth/presentation/widgets/auth_error_dialog.dart';
 import 'package:flutter_rxdart/core/loading/loading_screen.dart';

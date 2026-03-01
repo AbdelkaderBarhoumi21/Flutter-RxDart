@@ -1,8 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart' show immutable;
+import 'package:flutter_rxdart/features/auth/domain/entities/auth_command.dart';
 import 'package:flutter_rxdart/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:flutter_rxdart/features/auth/domain/auth_error.dart';
+import 'package:flutter_rxdart/features/auth/domain/entities/auth_error.dart';
 import 'package:flutter_rxdart/features/auth/presentation/bloc/auth_state.dart';
 import 'package:flutter_rxdart/features/contacts/presentation/bloc/contacts_bloc.dart';
 import 'package:flutter_rxdart/features/views/presentation/bloc/current_view.dart';
