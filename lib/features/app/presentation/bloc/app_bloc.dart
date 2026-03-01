@@ -6,7 +6,7 @@ import 'package:flutter_rxdart/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:flutter_rxdart/features/auth/domain/entities/auth_error.dart';
 import 'package:flutter_rxdart/features/auth/presentation/bloc/auth_state.dart';
 import 'package:flutter_rxdart/features/contacts/presentation/bloc/contacts_bloc.dart';
-import 'package:flutter_rxdart/features/views/presentation/bloc/current_view.dart';
+import 'package:flutter_rxdart/features/views/domain/entities/current_view.dart';
 import 'package:flutter_rxdart/features/views/presentation/bloc/views_bloc.dart';
 import 'package:flutter_rxdart/features/contacts/domain/contact_model.dart';
 import 'package:rxdart/rxdart.dart';

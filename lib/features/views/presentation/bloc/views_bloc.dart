@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart' show immutable;
-import 'package:flutter_rxdart/features/views/presentation/bloc/current_view.dart';
+import 'package:flutter_rxdart/features/views/domain/entities/current_view.dart';
 import 'package:rxdart/rxdart.dart';
 
 @immutable
